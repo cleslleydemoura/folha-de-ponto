@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Afacad&family=Work+Sans&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.background {
+  font-family: "Afacad", sans-serif;
+  font-family: "Work Sans", sans-serif;
+  background: linear-gradient(135deg, #718a96, #6cb3d4);
+  background-size: 200% 200%;
+  animation: gradient-animation 5s ease infinite;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px #00000033; /* L-T, R-T, R-B, L-B*/
+    width: 25vw;
+}  
+
+/* Switch color animation */
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
