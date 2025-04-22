@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import './HorariosInsert.css';
+import "./HorariosInsert.css";
 
 const HorariosInsert = () => {
   const [registros, setRegistros] = useState({});
@@ -26,11 +26,26 @@ const HorariosInsert = () => {
   };
 
   const salvarRegistro = () => {
+    const { nome, data, entrada, viagem, almocoInicio, almocoFim, saida } =
+      form;
+    if (
+      !nome ||
+      !data ||
+      !entrada ||
+      !viagem ||
+      !almocoInicio ||
+      !almocoFim ||
+      !saida
+    ) {
+      setMensagem("⛔ Todos os campos são obrigatórios.");
+      return;
+    }
+
     const dataBR = form.data.split("-").reverse().join("/");
 
     const novosRegistros = {
       ...registros,
-      [`${dataBR} - ${form.nome}`]: { ...form }
+      [`${dataBR} - ${form.nome}`]: { ...form },
     };
 
     setRegistros(novosRegistros);
@@ -100,7 +115,7 @@ const HorariosInsert = () => {
       const total = calcularTotal(registro);
       if (total.texto === "-" || total.mensagem.includes("Preencha")) continue;
 
-      const [h, m] = total.texto.split("h").map(t => parseInt(t.trim()));
+      const [h, m] = total.texto.split("h").map((t) => parseInt(t.trim()));
       const minutos = h * 60 + m;
 
       if (!funcionarios[nome]) funcionarios[nome] = 0;
@@ -137,13 +152,63 @@ const HorariosInsert = () => {
     });
   };
 
+  const exportarParaCSV = () => {
+    const registrosSalvos = JSON.parse(
+      localStorage.getItem("folhaDePonto") || "{}"
+    );
+
+    const linhas = [
+      [
+        "Data",
+        "Funcionário",
+        "Entrada",
+        "Viagem (min)",
+        "Almoço Início",
+        "Almoço Fim",
+        "Saída",
+        "Total Trabalhado",
+      ],
+    ];
+
+    for (const [chave, registro] of Object.entries(registrosSalvos)) {
+      const total = calcularTotal(registro);
+      const data = chave.split(" - ")[0];
+      const nome = registro.nome;
+      const linha = [
+        data,
+        nome,
+        registro.entrada,
+        registro.viagem || "0",
+        registro.almocoInicio,
+        registro.almocoFim,
+        registro.saida,
+        total.texto,
+      ];
+      linhas.push(linha);
+    }
+
+    const csvContent = linhas.map((l) => l.join(",")).join("\n");
+    const blob = new Blob(["\uFEFF" + csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "folha_de_ponto.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="background">
       <div className="container">
         <h1>FOLHA DE PONTO</h1>
 
         <div className="formulario">
-          <label>Nome:
+          <label>
+            Nome:
             <input
               type="text"
               name="nome"
@@ -153,7 +218,8 @@ const HorariosInsert = () => {
               required
             />
           </label>
-          <label>Data:
+          <label>
+            Data:
             <input
               type="date"
               name="data"
@@ -162,20 +228,56 @@ const HorariosInsert = () => {
               required
             />
           </label>
-          <label>Entrada:
-            <input type="time" name="entrada" value={form.entrada} onChange={handleChange} />
+          <label>
+            Entrada:
+            <input
+              type="time"
+              name="entrada"
+              value={form.entrada}
+              onChange={handleChange}
+              required
+            />
           </label>
-          <label>Tempo de Viagem (minutos):
-            <input type="number" name="viagem" value={form.viagem} onChange={handleChange} placeholder="Ex: 60" />
+          <label>
+            Tempo de Viagem (minutos):
+            <input
+              type="number"
+              name="viagem"
+              value={form.viagem}
+              onChange={handleChange}
+              placeholder="Ex: 60"
+              required
+            />
           </label>
-          <label>Almoço Início:
-            <input type="time" name="almocoInicio" value={form.almocoInicio} onChange={handleChange} />
+          <label>
+            Almoço Início:
+            <input
+              type="time"
+              name="almocoInicio"
+              value={form.almocoInicio}
+              onChange={handleChange}
+              required
+            />
           </label>
-          <label>Almoço Fim:
-            <input type="time" name="almocoFim" value={form.almocoFim} onChange={handleChange} />
+          <label>
+            Almoço Fim:
+            <input
+              type="time"
+              name="almocoFim"
+              value={form.almocoFim}
+              onChange={handleChange}
+              required
+            />
           </label>
-          <label>Saída:
-            <input type="time" name="saida" value={form.saida} onChange={handleChange} />
+          <label>
+            Saída:
+            <input
+              type="time"
+              name="saida"
+              value={form.saida}
+              onChange={handleChange}
+              required
+            />
           </label>
 
           <button onClick={salvarRegistro}>Salvar</button>
@@ -218,7 +320,9 @@ const HorariosInsert = () => {
             })}
           </tbody>
         </table>
-
+        <button className="csv-button" onClick={exportarParaCSV} style={{ marginBottom: "1rem" }}>
+          Exportar CSV
+        </button>
         <div className="mensagem" style={{ marginTop: "2rem" }}>
           <h3>Resumo Semanal</h3>
           {getResumoSemanal()}
