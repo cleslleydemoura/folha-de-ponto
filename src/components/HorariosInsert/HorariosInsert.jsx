@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./HorariosInsert.css";
+import githubLogo from "../../images/github.svg";
+import CustomTooltip from "../CustomTooltip/CustomTooltip";
 
 const HorariosInsert = () => {
   const [registros, setRegistros] = useState({});
@@ -187,12 +189,15 @@ const HorariosInsert = () => {
       linhas.push(linha);
     }
 
-    const csvContent = linhas.map((l) => l.join(",")).join("\n");
+    const csvContent = linhas
+      .map((l) => l.map((item) => `"${item}"`).join(";"))
+      .join("\r\n");
+
     const blob = new Blob(["\uFEFF" + csvContent], {
       type: "text/csv;charset=utf-8;",
     });
-    const url = URL.createObjectURL(blob);
 
+    const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
     link.setAttribute("download", "folha_de_ponto.csv");
@@ -203,6 +208,15 @@ const HorariosInsert = () => {
 
   return (
     <div className="background">
+      <CustomTooltip title="Repositório no GitHub">
+        <a href="https://github.com/cleslleydemoura" target="_blank">
+          <img
+          src={githubLogo}
+          alt="Logo do GitHub"
+        />
+        </a>
+      </CustomTooltip>
+
       <div className="container">
         <h1>FOLHA DE PONTO</h1>
 
@@ -320,7 +334,11 @@ const HorariosInsert = () => {
             })}
           </tbody>
         </table>
-        <button className="csv-button" onClick={exportarParaCSV} style={{ marginBottom: "1rem" }}>
+        <button
+          className="csv-button"
+          onClick={exportarParaCSV}
+          style={{ marginBottom: "1rem" }}
+        >
           Exportar CSV
         </button>
         <div className="mensagem" style={{ marginTop: "2rem" }}>

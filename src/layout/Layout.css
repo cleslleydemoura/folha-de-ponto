@@ -8,7 +8,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Work Sans", sans-serif;
-  background: linear-gradient(200deg, #668284, #6e7d7e, #493736, #7b3b3b);
+  background: linear-gradient(200deg, #668284, #6e7d7e, #364940, #355131);
   background-size: 500% 500%;
   animation: gradient-animation 5s ease infinite;
   min-height: 200vh;
@@ -16,8 +16,20 @@ body {
 
 .background {
   display: flex;
-  justify-content: center;
-  padding: 3rem 1rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+.background a{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.background img {
+  width: 70px;
+  margin-bottom: 1rem;
+  cursor: pointer;
 }
 
 .container {
@@ -62,7 +74,7 @@ input[type="date"] {
 
 button {
   padding: 0.7rem;
-  background-color: #668284;
+  background-color: #749a9d;
   color: white;
   border: none;
   border-radius: 0.5rem;
@@ -73,8 +85,12 @@ button {
   width: 100%;
 }
 
+button:hover {
+  background-color: #466747;
+}
+
 .csv-button {
-  margin-left: 510px;
+  margin-left: 80%;
   margin-top: 10px;
   padding: 0.7rem;
   background-color: #2b5539;
@@ -91,10 +107,6 @@ button {
 .csv-button:hover {
   transition: all 200ms;
   background-color: #398552;
-}
-
-button:hover {
-  background-color: #4c6668;
 }
 
 .mensagem {
