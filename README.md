@@ -9,7 +9,6 @@ Este projeto é uma aplicação voltada para a **administração da jornada de t
   - Nome do Funcionário
   - Data
   - Horário de Entrada
-  - Tempo de Viagem (em minutos)
   - Horário inicial do Almoço
   - Horário final do Almoço
   - Horário de Saída
@@ -32,8 +31,6 @@ Este projeto é uma aplicação voltada para a **administração da jornada de t
   - Mostra o total de horas trabalhadas por semana.
   - Aponta se o funcionário atingiu ou não as 30h semanais.
   - Informa a diferença (positiva ou negativa) em minutos.
-
-> O tempo de viagem é registrado e exibido, mas **não interfere no cálculo da carga horária**.
 
 ![image](https://github.com/user-attachments/assets/7774926c-a350-46c5-804c-23ea7e2945bb)
 

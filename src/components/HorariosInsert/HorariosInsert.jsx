@@ -9,7 +9,6 @@ const HorariosInsert = () => {
     nome: "",
     data: new Date().toISOString().slice(0, 10),
     entrada: "",
-    viagem: "",
     almocoInicio: "",
     almocoFim: "",
     saida: "",
@@ -28,17 +27,8 @@ const HorariosInsert = () => {
   };
 
   const salvarRegistro = () => {
-    const { nome, data, entrada, viagem, almocoInicio, almocoFim, saida } =
-      form;
-    if (
-      !nome ||
-      !data ||
-      !entrada ||
-      !viagem ||
-      !almocoInicio ||
-      !almocoFim ||
-      !saida
-    ) {
+    const { nome, data, entrada, almocoInicio, almocoFim, saida } = form;
+    if (!nome || !data || !entrada || !almocoInicio || !almocoFim || !saida) {
       setMensagem("⛔ Todos os campos são obrigatórios.");
       return;
     }
@@ -60,7 +50,6 @@ const HorariosInsert = () => {
       nome: "",
       data: new Date().toISOString().slice(0, 10),
       entrada: "",
-      viagem: "",
       almocoInicio: "",
       almocoFim: "",
       saida: "",
@@ -164,7 +153,6 @@ const HorariosInsert = () => {
         "Data",
         "Funcionário",
         "Entrada",
-        "Viagem (min)",
         "Almoço Início",
         "Almoço Fim",
         "Saída",
@@ -180,7 +168,6 @@ const HorariosInsert = () => {
         data,
         nome,
         registro.entrada,
-        registro.viagem || "0",
         registro.almocoInicio,
         registro.almocoFim,
         registro.saida,
@@ -210,10 +197,7 @@ const HorariosInsert = () => {
     <div className="background">
       <CustomTooltip title="Repositório no GitHub">
         <a href="https://github.com/cleslleydemoura" target="_blank">
-          <img
-          src={githubLogo}
-          alt="Logo do GitHub"
-        />
+          <img src={githubLogo} alt="Logo do GitHub" />
         </a>
       </CustomTooltip>
 
@@ -249,17 +233,6 @@ const HorariosInsert = () => {
               name="entrada"
               value={form.entrada}
               onChange={handleChange}
-              required
-            />
-          </label>
-          <label>
-            Tempo de Viagem (minutos):
-            <input
-              type="number"
-              name="viagem"
-              value={form.viagem}
-              onChange={handleChange}
-              placeholder="Ex: 60"
               required
             />
           </label>
@@ -309,7 +282,6 @@ const HorariosInsert = () => {
               <th>Data</th>
               <th>Funcionário</th>
               <th>Entrada</th>
-              <th>Viagem</th>
               <th>Almoço Início</th>
               <th>Almoço Fim</th>
               <th>Saída</th>
@@ -324,7 +296,6 @@ const HorariosInsert = () => {
                   <td>{data.split(" - ")[0]}</td>
                   <td>{registro.nome}</td>
                   <td>{registro.entrada}</td>
-                  <td>{registro.viagem ? `${registro.viagem} min` : "-"}</td>
                   <td>{registro.almocoInicio}</td>
                   <td>{registro.almocoFim}</td>
                   <td>{registro.saida}</td>
@@ -334,6 +305,7 @@ const HorariosInsert = () => {
             })}
           </tbody>
         </table>
+
         <button
           className="csv-button"
           onClick={exportarParaCSV}
@@ -341,6 +313,7 @@ const HorariosInsert = () => {
         >
           Exportar CSV
         </button>
+
         <div className="mensagem" style={{ marginTop: "2rem" }}>
           <h3>Resumo Semanal</h3>
           {getResumoSemanal()}
