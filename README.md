@@ -1,58 +1,39 @@
-# Getting Started with Create React App
+# 🕒 Sistema de Administração de Folha de Ponto
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este projeto é uma aplicação voltada para a **administração da jornada de trabalho dos funcionários**, com foco em controle de **horas diárias e semanais**. Ele foi desenvolvido com o objetivo de facilitar o acompanhamento da carga horária dos colaboradores, considerando inclusive **tempos de deslocamento (viagem)**.
 
-<<<<<<< HEAD
-## Available Scripts
-=======
 Visualização no <a href="https://folha-de-ponto-cleslley.vercel.app/">Vercel</a>.
 
 ```https://folha-de-ponto-cleslley.vercel.app/```
 
 ## Funcionalidades
->>>>>>> 0ffa86227f16882b4d0705e12dd6b3426882804a
 
-In the project directory, you can run:
+- 📋 **Formulário de Registro de Ponto**  
+  O usuário pode inserir os seguintes dados:
+  - Nome do Funcionário
+  - Data
+  - Horário de Entrada
+  - Horário inicial do Almoço
+  - Horário final do Almoço
+  - Horário de Saída
 
-### `npm start`
+- 📊 **Tabela de Registros**
+  - Exibe todos os dados inseridos para cada funcionário.
+  - Organiza os registros por funcionário e dia da semana.
+  - Atualiza automaticamente a cada nova inserção.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- ⏱️ **Cálculo de Carga Horária**
+  - A carga horária **diária é de 6 horas**.
+  - A carga horária **semanal é de 30 horas**.
+  - O sistema verifica se o funcionário **cumpriu, excedeu ou ficou abaixo da meta de horas**.
+  - Exibe mensagens com:
+    - Total de horas cumpridas
+    - Minutos faltantes
+    - Excedente de horas
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- 📅 **Resumo Semanal**
+  - Mostra o total de horas trabalhadas por semana.
+  - Aponta se o funcionário atingiu ou não as 30h semanais.
+  - Informa a diferença (positiva ou negativa) em minutos.
 
-<<<<<<< HEAD
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-=======
 ![image](https://github.com/user-attachments/assets/afc782c0-c8a3-4eb7-9628-2f55f33da892)
->>>>>>> 0ffa86227f16882b4d0705e12dd6b3426882804a
