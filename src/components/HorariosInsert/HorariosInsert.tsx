@@ -1,11 +1,19 @@
-import { useState, useEffect, useRef } from "react";
-import "./HorariosInsert.css";
+import { useState, useEffect, useRef, ChangeEvent } from "react";
 import githubLogo from "../../images/github.svg";
 import CustomTooltip from "../CustomTooltip/CustomTooltip";
 
+interface Registro {
+  nome: string;
+  data: string;
+  entrada: string;
+  almocoInicio: string;
+  almocoFim: string;
+  saida: string;
+}
+
 const HorariosInsert = () => {
-  const [registros, setRegistros] = useState({});
-  const [form, setForm] = useState({
+  const [registros, setRegistros] = useState<Record<string, Registro>>({});
+  const [form, setForm] = useState<Registro>({
     nome: "",
     data: new Date().toISOString().slice(0, 10),
     entrada: "",
@@ -14,15 +22,15 @@ const HorariosInsert = () => {
     saida: "",
   });
 
-  const [mensagem, setMensagem] = useState("");
-  const nomeRef = useRef(null);
+  const [mensagem, setMensagem] = useState<string>("");
+  const nomeRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const dados = localStorage.getItem("folhaDePonto");
     if (dados) setRegistros(JSON.parse(dados));
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -56,22 +64,28 @@ const HorariosInsert = () => {
     });
 
     setTimeout(() => {
-      if (nomeRef.current) nomeRef.current.focus();
+      nomeRef.current?.focus();
     }, 100);
   };
 
-  const calcularTotal = ({ entrada, almocoInicio, almocoFim, saida }) => {
+  const calcularTotal = ({
+    entrada,
+    almocoInicio,
+    almocoFim,
+    saida,
+  }: Registro) => {
     if (!(entrada && almocoInicio && almocoFim && saida)) {
       return { texto: "-", mensagem: "Preencha todos os campos." };
     }
 
-    const toDate = (hora) => new Date(`1970-01-01T${hora}:00`);
+    const toDate = (hora: string) => new Date(`1970-01-01T${hora}:00`);
     const e = toDate(entrada);
     const a1 = toDate(almocoInicio);
     const a2 = toDate(almocoFim);
     const s = toDate(saida);
 
-    const minutosTotais = (s - e - (a2 - a1)) / 1000 / 60;
+    const minutosTotais =
+      (s.getTime() - e.getTime() - (a2.getTime() - a1.getTime())) / 1000 / 60;
     const horas = Math.floor(minutosTotais / 60);
     const minutos = Math.floor(minutosTotais % 60);
 
@@ -91,8 +105,8 @@ const HorariosInsert = () => {
 
   const getResumoSemanal = () => {
     const cargaSemanalMin = 30 * 60;
-    const funcionarios = {};
-    const nomesUnicos = new Set();
+    const funcionarios: Record<string, number> = {};
+    const nomesUnicos = new Set<string>();
 
     for (const [dataCompleta, registro] of Object.entries(registros)) {
       const [data, nome] = dataCompleta.split(" - ");
@@ -146,7 +160,7 @@ const HorariosInsert = () => {
   const exportarParaCSV = () => {
     const registrosSalvos = JSON.parse(
       localStorage.getItem("folhaDePonto") || "{}"
-    );
+    ) as Record<string, Registro>;
 
     const linhas = [
       [
@@ -187,25 +201,35 @@ const HorariosInsert = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", "folha_de_ponto.csv");
+    link.setAttribute("download", "FOLHA DE PONTO.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
   return (
-    <div className="background">
+    <div className="flex flex-col items-center min-h-screen p-4 animated-gradient">
       <CustomTooltip title="Repositório no GitHub">
-        <a href="https://github.com/cleslleydemoura" target="_blank">
-          <img src={githubLogo} alt="Logo do GitHub" />
+        <a
+          href="https://github.com/cleslleydemoura"
+          target="_blank"
+          className="flex flex-col items-center"
+        >
+          <img
+            src={githubLogo}
+            alt="Logo do GitHub"
+            className="w-16 mb-4 cursor-pointer"
+          />
         </a>
       </CustomTooltip>
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-3xl">
+        <h1 className="mt-16 text-2xl font-bold text-center mb-6">
+          FOLHA DE PONTO
+        </h1>
 
-      <div className="container">
-        <h1>FOLHA DE PONTO</h1>
-
-        <div className="formulario">
-          <label>
+        <div className="flex flex-col gap-4 mb-6">
+          {/* Nome */}
+          <label className="flex flex-col text-sm font-medium">
             Nome:
             <input
               type="text"
@@ -214,9 +238,12 @@ const HorariosInsert = () => {
               onChange={handleChange}
               ref={nomeRef}
               required
+              className="mt-1 p-2 border rounded-md text-sm"
             />
           </label>
-          <label>
+
+          {/* Data */}
+          <label className="flex flex-col text-sm font-medium">
             Data:
             <input
               type="date"
@@ -224,9 +251,12 @@ const HorariosInsert = () => {
               value={form.data}
               onChange={handleChange}
               required
+              className="mt-1 p-2 border rounded-md text-sm"
             />
           </label>
-          <label>
+
+          {/* Entrada */}
+          <label className="flex flex-col text-sm font-medium">
             Entrada:
             <input
               type="time"
@@ -234,9 +264,12 @@ const HorariosInsert = () => {
               value={form.entrada}
               onChange={handleChange}
               required
+              className="mt-1 p-2 border rounded-md text-sm"
             />
           </label>
-          <label>
+
+          {/* Almoço Início */}
+          <label className="flex flex-col text-sm font-medium">
             Almoço Início:
             <input
               type="time"
@@ -244,9 +277,12 @@ const HorariosInsert = () => {
               value={form.almocoInicio}
               onChange={handleChange}
               required
+              className="mt-1 p-2 border rounded-md text-sm"
             />
           </label>
-          <label>
+
+          {/* Almoço Fim */}
+          <label className="flex flex-col text-sm font-medium">
             Almoço Fim:
             <input
               type="time"
@@ -254,9 +290,12 @@ const HorariosInsert = () => {
               value={form.almocoFim}
               onChange={handleChange}
               required
+              className="mt-1 p-2 border rounded-md text-sm"
             />
           </label>
-          <label>
+
+          {/* Saída */}
+          <label className="flex flex-col text-sm font-medium">
             Saída:
             <input
               type="time"
@@ -264,28 +303,35 @@ const HorariosInsert = () => {
               value={form.saida}
               onChange={handleChange}
               required
+              className="mt-1 p-2 border rounded-md text-sm"
             />
           </label>
 
-          <button onClick={salvarRegistro}>Salvar</button>
+          {/* Botão de salvar */}
+          <button
+            onClick={salvarRegistro}
+            className="p-3 bg-emerald-600 text-white rounded-md font-semibold hover:bg-emerald-700"
+          >
+            Salvar
+          </button>
         </div>
 
         {mensagem && (
-          <div className="mensagem">
-            <strong>{mensagem}</strong>
+          <div className="bg-gray-100 text-gray-800 text-sm p-3 rounded text-center font-semibold mb-4">
+            {mensagem}
           </div>
         )}
 
-        <table>
+        <table className="w-full text-sm border-collapse">
           <thead>
-            <tr>
-              <th>Data</th>
-              <th>Funcionário</th>
-              <th>Entrada</th>
-              <th>Almoço Início</th>
-              <th>Almoço Fim</th>
-              <th>Saída</th>
-              <th>Total Trabalhado</th>
+            <tr className="bg-gray-200">
+              <th className="border p-2">Data</th>
+              <th className="border p-2">Funcionário</th>
+              <th className="border p-2">Entrada</th>
+              <th className="border p-2">Almoço Início</th>
+              <th className="border p-2">Almoço Fim</th>
+              <th className="border p-2">Saída</th>
+              <th className="border p-2">Total Trabalhado</th>
             </tr>
           </thead>
           <tbody>
@@ -293,13 +339,13 @@ const HorariosInsert = () => {
               const total = calcularTotal(registro);
               return (
                 <tr key={data}>
-                  <td>{data.split(" - ")[0]}</td>
-                  <td>{registro.nome}</td>
-                  <td>{registro.entrada}</td>
-                  <td>{registro.almocoInicio}</td>
-                  <td>{registro.almocoFim}</td>
-                  <td>{registro.saida}</td>
-                  <td>{total.texto}</td>
+                  <td className="border p-2">{data.split(" - ")[0]}</td>
+                  <td className="border p-2">{registro.nome}</td>
+                  <td className="border p-2">{registro.entrada}</td>
+                  <td className="border p-2">{registro.almocoInicio}</td>
+                  <td className="border p-2">{registro.almocoFim}</td>
+                  <td className="border p-2">{registro.saida}</td>
+                  <td className="border p-2">{total.texto}</td>
                 </tr>
               );
             })}
@@ -307,16 +353,19 @@ const HorariosInsert = () => {
         </table>
 
         <button
-          className="csv-button"
+          className="mt-4 ml-auto block bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded"
           onClick={exportarParaCSV}
-          style={{ marginBottom: "1rem" }}
         >
           Exportar CSV
         </button>
 
-        <div className="mensagem" style={{ marginTop: "2rem" }}>
-          <h3>Resumo Semanal</h3>
-          {getResumoSemanal()}
+        <div className="mt-6 flex justify-center">
+          <div className="bg-gray-100 p-4 rounded-lg text-center w-full max-w-xl">
+            <h3 className="text-lg font-bold mb-2">Resumo Semanal</h3>
+            <div className="text-sm space-y-1 font-semibold uppercase">
+              {getResumoSemanal()}
+            </div>
+          </div>
         </div>
       </div>
     </div>
