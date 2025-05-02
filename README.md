@@ -1,6 +1,6 @@
 # 🕒 Sistema de Administração de Folha de Ponto
 
-Este projeto é uma aplicação voltada para a **administração da jornada de trabalho dos funcionários**, com foco em controle de **horas diárias e semanais**. Ele foi desenvolvido com o objetivo de facilitar o acompanhamento da carga horária dos colaboradores, considerando inclusive **tempos de deslocamento (viagem)**.
+Este projeto é uma aplicação voltada para a **administração da jornada de trabalho dos funcionários**, com foco em controle de **horas diárias e semanais**. Ele foi desenvolvido com o objetivo de facilitar o acompanhamento da carga horária dos colaboradores.
 
 Visualização no <a href="https://folha-de-ponto-cleslley.vercel.app/">Vercel</a>.
 
