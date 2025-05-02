@@ -108,7 +108,12 @@ const HorariosInsert = () => {
     const funcionarios: Record<string, number> = {};
     const nomesUnicos = new Set<string>();
 
-    for (const [dataCompleta, registro] of Object.entries(registros)) {
+    const registrosAtualizados = JSON.parse(
+      localStorage.getItem("folhaDePonto") || "{}"
+    ) as Record<string, Registro>;
+    for (const [dataCompleta, registro] of Object.entries(
+      registrosAtualizados
+    )) {
       const [data, nome] = dataCompleta.split(" - ");
       nomesUnicos.add(nome);
       const [dia, mes, ano] = data.split("/");
